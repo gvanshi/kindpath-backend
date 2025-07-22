@@ -6,13 +6,18 @@ const donationSchema = new mongoose.Schema({
   email: String,
   sevaType: String,
   amount: Number,
-  quantity: Number, // 👈 (if you’re using seva quantity)
-  paymentProofUrl: String,
+  quantity: Number, // optional: like KGs or kits
+  panCard: String,   // ✅ Added
+  address: String,   // ✅ Added
   donationDate: { type: Date, default: Date.now },
-  receiptSent: { type: Boolean, default: false },
+  slipGenerated: { type: Boolean, default: false },
+  sevaDone: String,
   proofSent: { type: Boolean, default: false },
-  received80G: { type: Boolean, default: false }, // 👈 ADD THIS LINE
-  proofLink: String, // 👈 optional: to store 80G folder link
+  receipt80GSent: { type: Boolean, default: false },
+  billCreated: { type: Boolean, default: false },
+  billFiled: { type: Boolean, default: false },
+  paymentProofUrl: String,
+  proofLink: String, // 80G receipt folder link
   notes: String
 });
 
