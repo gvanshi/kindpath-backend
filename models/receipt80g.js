@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const receipt80gSchema = new mongoose.Schema({
+  dateTime: { type: String }, // ⬅️ Added this line for storing Date & Time from the sheet
   receiptNumber: String,
   name: String,
   phone: String,
