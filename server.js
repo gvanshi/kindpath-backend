@@ -2,27 +2,22 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+
 const donationRoutes = require('./routes/donationRoutes');
-const Donation = require('./models/Donation'); // 🛑 You were missing this
-const Receipt80G = require('./models/receipt80g');
+const receipt80GRoutes = require('./routes/receipt80g');
 
 dotenv.config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-router.post('/api/receipts80g', async (req, res) => {
-  try {
-    const receipt = new Receipt80G(req.body);
-    await receipt.save();
-    res.status(201).json({ message: 'Receipt saved successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Something went wrong', details: err });
-  }
-});
+// Use your routes
 app.use('/api/donations', donationRoutes);
+app.use('/api/receipts80g', receipt80GRoutes);
 
-// ✅ FIXED DELETE route directly in app
+// ✅ DELETE route directly in app
+const Donation = require('./models/Donation');
 app.delete('/api/delete/:sevaType', async (req, res) => {
   const { sevaType } = req.params;
   try {
@@ -33,9 +28,11 @@ app.delete('/api/delete/:sevaType', async (req, res) => {
   }
 });
 
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch(err => console.log('❌ MongoDB connection error:', err));
 
+// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
