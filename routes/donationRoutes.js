@@ -26,6 +26,7 @@ router.get('/', async (req, res) => {
   }
 });
 // GET: Dashboard Stats
+// GET: Dashboard Stats
 router.get('/stats', async (req, res) => {
   try {
     const all = await Donation.find();
@@ -33,6 +34,7 @@ router.get('/stats', async (req, res) => {
     // Group by donor name
     const donorMap = {};
     const sevaMap = {};
+    const sevaCountMap = {};
     const monthlyMap = {};
 
     let totalAmount = 0;
@@ -56,9 +58,12 @@ router.get('/stats', async (req, res) => {
       donorMap[d.name].total += d.amount;
       donorMap[d.name].count += 1;
 
-      // Seva grouping
+      // Seva amount grouping (existing)
       const seva = d.sevaType || "Unknown";
-      sevaMap[seva] = (sevaMap[seva] || 0) + 1;
+      sevaMap[seva] = (sevaMap[seva] || 0) + d.amount;
+
+      // ✅ Seva count grouping (new)
+      sevaCountMap[seva] = (sevaCountMap[seva] || 0) + 1;
 
       // Monthly grouping
       const date = new Date(d.donationDate);
@@ -84,7 +89,8 @@ router.get('/stats', async (req, res) => {
       totalDonations: totalAmount,
       totalDonors: all.length,
       todayDonations: todayAmount,
-      sevaBreakdown: sevaMap,
+      sevaBreakdown: sevaMap,              // 💰 amount per seva
+      sevaCountBreakdown: sevaCountMap,    // 🔢 count per seva (NEW)
       topDonor,
       averageDonation: Math.round(avgDonation),
       repeatDonors,
@@ -95,6 +101,7 @@ router.get('/stats', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 router.post('/filter-stats', async (req, res) => {
   try {
