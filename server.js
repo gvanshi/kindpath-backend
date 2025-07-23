@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const donationRoutes = require('./routes/donationRoutes');
 const Donation = require('./models/Donation'); // 🛑 You were missing this
-const Receipt80G = require('../models/receipt80g');
+const Receipt80G = require('./models/receipt80g');
 
 dotenv.config();
 const app = express();
