@@ -3,7 +3,13 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require("cors");
 
-app.use(cors());
+
+const corsOptions = {
+  origin: ['http://localhost:3000'], // Add your frontend domains here
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 
 const donationRoutes = require('./routes/donationRoutes');
 const receipt80GRoutes = require('./routes/receipt80g');
