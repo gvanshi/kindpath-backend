@@ -9,7 +9,6 @@ const corsOptions = {
   credentials: true
 };
 
-app.use(cors(corsOptions));
 
 const donationRoutes = require('./routes/donationRoutes');
 const receipt80GRoutes = require('./routes/receipt80g');
@@ -17,6 +16,8 @@ const receipt80GRoutes = require('./routes/receipt80g');
 dotenv.config();
 
 const app = express();
+app.use(cors(corsOptions));
+
 app.use('/api/donations', donationRoutes);
 
 app.use(express.json());
