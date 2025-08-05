@@ -144,4 +144,48 @@ router.post('/filter-stats', async (req, res) => {
   }
 });
 
+// ✅ GET Top 10 Donors by Amount (within date range)
+router.get('/top', async (req, res) => {
+  try {
+    const { from, to } = req.query;
+
+    if (!from || !to) {
+      return res.status(400).json({ error: 'Missing from or to date' });
+    }
+
+    const topDonors = await Donation.aggregate([
+      {
+        $match: {
+          donationDate: {
+            $gte: new Date(from),
+            $lte: new Date(to)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            name: '$name',
+            email: '$email',
+            phone: '$phone',
+            sevaType: '$sevaType',
+            receiptLink: '$receiptLink'
+          },
+          totalAmount: { $sum: '$amount' },
+          donationCount: { $sum: 1 },
+          lastDonationDate: { $max: '$donationDate' }
+        }
+      },
+      { $sort: { totalAmount: -1 } },
+      { $limit: 10 }
+    ]);
+
+    res.status(200).json(topDonors);
+  } catch (err) {
+    console.error('Error in /top:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router;
