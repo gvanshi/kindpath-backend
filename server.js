@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const cors = require('cors');
+const cors = require("cors");
+
+app.use(cors());
 
 const donationRoutes = require('./routes/donationRoutes');
 const receipt80GRoutes = require('./routes/receipt80g');
@@ -11,7 +13,6 @@ dotenv.config();
 const app = express();
 app.use('/api/donations', donationRoutes);
 
-app.use(cors());
 app.use(express.json());
 
 // Use your routes
