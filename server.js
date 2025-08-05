@@ -9,6 +9,9 @@ const receipt80GRoutes = require('./routes/receipt80g');
 dotenv.config();
 
 const app = express();
+const donationRoutes = require('./routes/donationRoutes');
+app.use('/api/donations', donationRoutes);
+
 app.use(cors());
 app.use(express.json());
 
