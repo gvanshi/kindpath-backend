@@ -85,17 +85,18 @@ router.get('/stats', async (req, res) => {
     // Average donation
     const avgDonation = totalAmount / all.length;
 
-    res.json({
-      totalDonations: totalAmount,
-      totalDonors: all.length,
-      todayDonations: todayAmount,
-      sevaBreakdown: sevaMap,              // 💰 amount per seva
-      sevaCountBreakdown: sevaCountMap,    // 🔢 count per seva (NEW)
-      topDonor,
-      averageDonation: Math.round(avgDonation),
-      repeatDonors,
-      monthlyGraph: monthlyMap
-    });
+res.json({
+  totalDonations: Number.isFinite(totalAmount) ? totalAmount : 0,
+  totalDonors: all.length,
+  todayDonations: todayAmount,
+  sevaBreakdown: sevaMap,
+  sevaCountBreakdown: sevaCountMap,
+  topDonor,
+  averageDonation: all.length > 0 ? Math.round(avgDonation) : 0,
+  repeatDonors,
+  monthlyGraph: monthlyMap
+});
+
 
   } catch (err) {
     res.status(500).json({ error: err.message });
