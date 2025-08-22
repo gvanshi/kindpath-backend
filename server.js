@@ -16,14 +16,14 @@ const receipt80GRoutes = require('./routes/receipt80g');
 dotenv.config();
 
 const app = express();
+app.use(express.json());
+
 app.use(cors(corsOptions));
 
 app.use('/api/donations', donationRoutes);
 
-app.use(express.json());
 
 // Use your routes
-app.use('/api/donations', donationRoutes);
 app.use('/api/receipts80g', receipt80GRoutes);
 
 // ✅ DELETE route directly in app
