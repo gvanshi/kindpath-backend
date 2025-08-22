@@ -25,6 +25,19 @@ app.use('/api/donations', donationRoutes);
 
 // Use your routes
 app.use('/api/receipts80g', receipt80GRoutes);
+// delete where sevaType is null OR missing
+app.delete('/api/delete/null', async (req, res) => {
+  const result = await Donations.deleteMany({ sevaType: null }); // matches null or missing
+  res.json({ message: 'Deleted NULL/missing sevaType', deletedCount: result.deletedCount });
+});
+
+// delete where sevaType is '' or only spaces
+app.delete('/api/delete/blank', async (req, res) => {
+  const result = await Donations.deleteMany({
+    $or: [{ sevaType: '' }, { sevaType: { $regex: '^\\s+$' } }]
+  });
+  res.json({ message: 'Deleted blank/space sevaType', deletedCount: result.deletedCount });
+});
 
 // ✅ DELETE route directly in app
 const Donation = require('./models/Donation');
@@ -38,19 +51,7 @@ app.delete('/api/delete/:sevaType', async (req, res) => {
   }
 });
 
-// NEW: delete where sevaType is null
-app.delete('/api/delete/null', async (req, res) => {
-  const result = await Donations.deleteMany({ sevaType: null });
-  res.json({ message: 'Deleted NULL sevaType entries', deletedCount: result.deletedCount });
-});
 
-// NEW: delete where sevaType is '' or only spaces
-app.delete('/api/delete/blank', async (req, res) => {
-  const result = await Donations.deleteMany({
-    $or: [{ sevaType: '' }, { sevaType: { $regex: '^\\s+$' } }]
-  });
-  res.json({ message: 'Deleted blank/space sevaType entries', deletedCount: result.deletedCount });
-});
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))
