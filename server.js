@@ -5,7 +5,7 @@ const cors = require("cors");
 
 
 const corsOptions = {
-  origin: ['https://kindpath-frontened-crmon.vercel.app'], // Add your frontend domains here
+  origin: ['https://kindpath-frontened-crmon.vercel.app', 'http://127.0.0.1:5500'], // Add your frontend domains here
   credentials: true
 };
 
